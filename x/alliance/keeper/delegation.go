@@ -516,7 +516,7 @@ func (k Keeper) updateValidatorShares(ctx sdk.Context, validator types.AllianceV
 
 // GetAllianceBondedAmount returns the total amount of bonded native tokens that are not in the
 // unbonding pool
-func (k Keeper) getAllianceBondedAmount(ctx sdk.Context, delegator sdk.AccAddress) sdk.Int {
+func (k Keeper) GetAllianceBondedAmount(ctx sdk.Context, delegator sdk.AccAddress) sdk.Int {
 	bonded := sdk.ZeroDec()
 	k.stakingKeeper.IterateDelegatorDelegations(ctx, delegator, func(delegation stakingtypes.Delegation) bool {
 		validatorAddr, err := sdk.ValAddressFromBech32(delegation.ValidatorAddress)
