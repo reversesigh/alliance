@@ -11,7 +11,7 @@ import (
 	test_helpers "github.com/terra-money/alliance/app"
 )
 
-func setupApp(t *testing.T, numValidators int, numDelegators int, initBalance sdk.Coins) (app *test_helpers.App, ctx sdk.Context, valAddrs []sdk.ValAddress, delAddrs []sdk.AccAddress) {
+func setupApp(t *testing.T, numValidators int, numDelegators int, initBalance sdk.Coins) (app *test_helpers.App, ctx sdk.Context, valAddrs []sdk.ValAddress, delAddrs []sdk.AccAddress) { //nolint:unused // func `setupApp` is unused
 	app = test_helpers.Setup(t, false)
 	ctx = app.BaseApp.NewContext(false, tmproto.Header{})
 	startTime := time.Now()

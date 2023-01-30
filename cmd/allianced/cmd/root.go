@@ -23,7 +23,6 @@ import (
 	"github.com/cosmos/cosmos-sdk/server"
 	serverconfig "github.com/cosmos/cosmos-sdk/server/config"
 	servertypes "github.com/cosmos/cosmos-sdk/server/types"
-	simapp "github.com/terra-money/alliance/app"
 
 	"github.com/terra-money/alliance/app"
 	"github.com/terra-money/alliance/app/params"
@@ -159,20 +158,20 @@ func initRootCmd(rootCmd *cobra.Command, encodingConfig params.EncodingConfig) {
 
 	a := appCreator{encodingConfig}
 	rootCmd.AddCommand(
-		genutilcli.InitCmd(simapp.ModuleBasics, simapp.DefaultNodeHome),
-		genutilcli.CollectGenTxsCmd(banktypes.GenesisBalancesIterator{}, simapp.DefaultNodeHome),
+		genutilcli.InitCmd(app.ModuleBasics, app.DefaultNodeHome),
+		genutilcli.CollectGenTxsCmd(banktypes.GenesisBalancesIterator{}, app.DefaultNodeHome),
 		genutilcli.MigrateGenesisCmd(),
-		genutilcli.GenTxCmd(simapp.ModuleBasics, encodingConfig.TxConfig, banktypes.GenesisBalancesIterator{}, simapp.DefaultNodeHome),
-		genutilcli.ValidateGenesisCmd(simapp.ModuleBasics),
-		AddGenesisAccountCmd(simapp.DefaultNodeHome),
+		genutilcli.GenTxCmd(app.ModuleBasics, encodingConfig.TxConfig, banktypes.GenesisBalancesIterator{}, app.DefaultNodeHome),
+		genutilcli.ValidateGenesisCmd(app.ModuleBasics),
+		AddGenesisAccountCmd(app.DefaultNodeHome),
 		tmcli.NewCompletionCmd(rootCmd, true),
-		NewTestnetCmd(simapp.ModuleBasics, banktypes.GenesisBalancesIterator{}),
+		NewTestnetCmd(app.ModuleBasics, banktypes.GenesisBalancesIterator{}),
 		debug.Cmd(),
 		config.Cmd(),
 		pruning.PruningCmd(a.newApp),
 	)
 
-	server.AddCommands(rootCmd, simapp.DefaultNodeHome, a.newApp, a.appExport, addModuleInitFlags)
+	server.AddCommands(rootCmd, app.DefaultNodeHome, a.newApp, a.appExport, addModuleInitFlags)
 
 	// add keybase, auxiliary RPC, query, and tx child commands
 	rootCmd.AddCommand(
@@ -208,7 +207,7 @@ func queryCommand() *cobra.Command {
 		authcmd.QueryTxCmd(),
 	)
 
-	simapp.ModuleBasics.AddQueryCommands(cmd)
+	app.ModuleBasics.AddQueryCommands(cmd)
 	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
 
 	return cmd
@@ -235,7 +234,7 @@ func txCommand() *cobra.Command {
 		authcmd.GetAuxToFeeCommand(),
 	)
 
-	simapp.ModuleBasics.AddTxCommands(cmd)
+	app.ModuleBasics.AddTxCommands(cmd)
 	cmd.PersistentFlags().String(flags.FlagChainID, "", "The network chain ID")
 
 	return cmd
