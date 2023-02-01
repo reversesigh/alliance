@@ -12,7 +12,7 @@ type RewardsKeeper interface{}
 var _ RewardsKeeper = Keeper{}
 
 // ClaimValidatorRewards claims the validator rewards (minus commission) from the distribution module
-// This should be called everytime validator delegation changes (e.g. [un/re]delegation) to update the reward claim history
+// This should be called every time validator delegation changes (e.g. [un/re]delegation) to update the reward claim history
 func (k Keeper) ClaimValidatorRewards(ctx sdk.Context, val types.AllianceValidator) (sdk.Coins, error) {
 	moduleAddr := k.accountKeeper.GetModuleAddress(types.ModuleName)
 
@@ -32,8 +32,9 @@ func (k Keeper) ClaimValidatorRewards(ctx sdk.Context, val types.AllianceValidat
 	return coins, nil
 }
 
-// ClaimDelegationRewards claims delegation rewards and transfers to the delegator account
-// This method updates the delegation so you will need to re-query an updated version from the database
+// ClaimDelegationRewards retrieves and transfers delegation rewards to the delegator's account.
+// Note that this method updates the delegation record,
+// so a new query of the updated version from the database is necessary after calling this function.
 func (k Keeper) ClaimDelegationRewards(ctx sdk.Context, delAddr sdk.AccAddress, val types.AllianceValidator, denom string) (sdk.Coins, error) {
 	asset, found := k.GetAssetByDenom(ctx, denom)
 	if !found {

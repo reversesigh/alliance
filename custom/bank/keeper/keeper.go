@@ -50,7 +50,8 @@ func (k *Keeper) RegisterKeepers(ak alliancekeeper.Keeper, sk banktypes.StakingK
 	k.sk = sk
 }
 
-// SupplyOf implements the Query/SupplyOf gRPC method
+// SupplyOf calculates the total supply of the bond denomination,
+// excluding tokens minted by the alliance module to maintain voting power of alliance assets.
 func (k Keeper) SupplyOf(c context.Context, req *types.QuerySupplyOfRequest) (*types.QuerySupplyOfResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "empty request")
@@ -76,7 +77,8 @@ func (k Keeper) SupplyOf(c context.Context, req *types.QuerySupplyOfRequest) (*t
 	return &types.QuerySupplyOfResponse{Amount: sdk.NewCoin(req.Denom, supply.Amount)}, nil
 }
 
-// TotalSupply implements the Query/TotalSupply gRPC method
+// TotalSupply calculates the total supply of the bond denomination,
+// excluding tokens minted by the alliance module to maintain voting power of alliance assets.
 func (k Keeper) TotalSupply(ctx context.Context, req *types.QueryTotalSupplyRequest) (*types.QueryTotalSupplyResponse, error) {
 	sdkCtx := sdk.UnwrapSDKContext(ctx)
 	totalSupply, pageRes, err := k.GetPaginatedTotalSupply(sdkCtx, req.Pagination)

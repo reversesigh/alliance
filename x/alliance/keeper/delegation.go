@@ -13,10 +13,10 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-// Delegate is the entry point for delegators to delegate alliance assets to validators
-// Voting power is not immediately accured to the delegators in this method and a flag is set to rebalance voting power
-// at the end of the block. This improves performance since rebalancing only needs to happen once regardless of how many
-// delegations are made in a single block
+// Delegate allows delegators to assign their alliance assets to validators.
+// Voting power is not updated instantly, but instead, a flag is set to recalculate it after the end of the block.
+// This improves performance by only requiring one re-balancing calculation per block,
+// regardless of the number of delegations made.
 func (k Keeper) Delegate(ctx sdk.Context, delAddr sdk.AccAddress, validator types.AllianceValidator, coin sdk.Coin) (*sdk.Dec, error) {
 	// Check if asset is whitelisted as an alliance asset
 	asset, found := k.GetAssetByDenom(ctx, coin.Denom)
@@ -129,7 +129,7 @@ func (k Keeper) Redelegate(ctx sdk.Context, delAddr sdk.AccAddress, srcVal types
 }
 
 // Undelegate from a validator
-// Staked tokens are only distributed to the delegator after the unbonding period
+// Staked tokens are only refunded to the delegator after the unbonding period
 func (k Keeper) Undelegate(ctx sdk.Context, delAddr sdk.AccAddress, validator types.AllianceValidator, coin sdk.Coin) (*time.Time, error) {
 	asset, found := k.GetAssetByDenom(ctx, coin.Denom)
 	if !found {

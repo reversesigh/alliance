@@ -23,6 +23,9 @@ func RunAllInvariants(ctx sdk.Context, k keeper.Keeper) (res string, stop bool) 
 	return res, stop
 }
 
+// ValidatorSharesInvariant makes sure that all individual validator shares sum up to the total shares recorded
+// in the alliance asset. It also makes sure that none of the validators have a negative share which is a
+// sign that something went wrong
 func ValidatorSharesInvariant(k keeper.Keeper) sdk.Invariant {
 	return func(ctx sdk.Context) (string, bool) {
 		var (
@@ -58,6 +61,9 @@ func ValidatorSharesInvariant(k keeper.Keeper) sdk.Invariant {
 	}
 }
 
+// DelegatorSharesInvariant makes sure that all individual delegation shares sum up to the total shares recorded
+// in the validator. It also makes sure that none of the delegators have a negative share which is a
+// sign that something went wrong
 func DelegatorSharesInvariant(k keeper.Keeper) sdk.Invariant {
 	return func(ctx sdk.Context) (string, bool) {
 		var (
